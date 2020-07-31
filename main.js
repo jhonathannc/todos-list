@@ -1,11 +1,7 @@
 input = document.getElementsByTagName('input')[0]
 ul = document.getElementsByTagName('ul')[0]
 
-todos = [
-    'Make coffee',
-    'Check trello',
-    'Study Javascript'
-]
+todos = JSON.parse(localStorage.getItem('todos')) || []
 
 listTodos()
 console.log(todos)
@@ -16,8 +12,8 @@ function addTodo() {
             alert('Ops, this todo already exist!')
         } else {
             todos.push(input.value)
+            saveLocal()
             listTodos()
-            console.log(todos)
         }
     }
 }
@@ -25,12 +21,11 @@ function addTodo() {
 function listTodos() {
     ul.innerHTML = ''
     for (todo of todos) {
-        li = document.createElement('li')
         button = document.createElement('button')
         button.textContent = 'Delete'
-        todoDel = todos.indexOf(todo)
-        button.setAttribute('onclick', 'delTodo(' + todoDel + ')')
         button.style.margin = '0 10px'
+        button.setAttribute('onclick', 'delTodo(' + todos.indexOf(todo) + ')')
+        li = document.createElement('li')
         li.textContent = todo
         li.style.margin = '5px 0'
         li.appendChild(button)
@@ -41,4 +36,9 @@ function listTodos() {
 function delTodo(delTodo) {
     todos.splice(delTodo, 1)
     listTodos()
+    saveLocal()
+}
+
+function saveLocal() {
+    localStorage.setItem('todos_list', JSON.stringify(todos))
 }
