@@ -1,10 +1,14 @@
-input = document.getElementsByTagName('input')[0]
 ul = document.getElementsByTagName('ul')[0]
+input = document.getElementsByTagName('input')[0]
+input.addEventListener('keyup', function(event) {
+    if (event.keyCode === 13) {
+        addTodo()
+    }
+})
 
-todos = JSON.parse(localStorage.getItem('todos')) || []
+todos = JSON.parse(localStorage.getItem('todos_list')) || []
 
 listTodos()
-console.log(todos)
 
 function addTodo() {
     if (input.value != '') {
@@ -14,6 +18,7 @@ function addTodo() {
             todos.push(input.value)
             saveLocal()
             listTodos()
+            input.value = ''
         }
     }
 }
