@@ -5,10 +5,22 @@ input.addEventListener('keyup', function(event) {
         addTodo()
     }
 })
-
 todos = JSON.parse(localStorage.getItem('todos_list')) || []
-
 listTodos()
+user = []
+
+
+axios.get('https://api.github.com/users/jhonathannc')
+    .then(function(response) {
+        user.name = response.data.name
+        user.img = response.data.avatar_url
+        user.url = response.data.html_url
+        JSON.stringify(user)
+        setFooter(user)
+    })
+    .catch(function(error) {
+        console.log(error)
+    })
 
 function addTodo() {
     if (input.value != '') {
@@ -46,4 +58,25 @@ function delTodo(delTodo) {
 
 function saveLocal() {
     localStorage.setItem('todos_list', JSON.stringify(todos))
+}
+
+function setFooter(user) {
+    usern = document.createElement('h5')
+    usern.innerHTML = 'Created by: ' + user.name
+    div = document.createElement('div')
+    div.style.display = 'flex'
+    img = document.createElement('img')
+    img.setAttribute('src', user.img)
+    img.style.borderRadius = '50%'
+    img.style.width = '50px'
+    img.style.heigth = '50px'
+    img.style.margin = '5px'
+    div.appendChild(img)
+    div.appendChild(usern)
+    a = document.createElement('a')
+    a.href = user.url
+    a.innerHTML = 'See me on GitHub'
+    document.getElementById('app').appendChild(div)
+    document.getElementById('app').appendChild(a)
+
 }
