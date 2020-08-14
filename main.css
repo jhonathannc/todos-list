@@ -32,7 +32,7 @@ ul {
     margin-left: 1rem;
 }
 
-#app .footer {
+.footer {
     display: flex;
     width: 100%;
     justify-content: flex-start;
