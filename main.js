@@ -25,19 +25,21 @@ axios.get('https://api.github.com/users/jhonathannc')
 
 function addTodo() {
     if (input.value != '') {
-        if (todos.indexOf(input.value) > -1) {
-            alert('Ops, this todo already exist!')
-        } else {
-            todo = {
-                id: todos.length,
-                todo: input.value,
-                done: false
-            }
-            todos.push(todo)
-            saveLocal()
-            listTodos()
-            input.value = ''
+        for (todo of todos) {
+            if (todo.todo.indexOf(input.value) > -1)
+                return alert('Ops, this todo already exist!')
+
         }
+        todo = {
+            id: todos.length,
+            todo: input.value,
+            done: false
+        }
+        todos.push(todo)
+        saveLocal()
+        listTodos()
+        return input.value = ''
+
     }
 }
 
