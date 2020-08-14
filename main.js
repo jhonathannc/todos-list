@@ -8,6 +8,7 @@ input.addEventListener('keyup', function(event) {
 todos = JSON.parse(localStorage.getItem('todos_list')) || []
 listTodos()
 user = []
+currentTodo = {}
 
 
 axios.get('https://api.github.com/users/jhonathannc')
@@ -27,7 +28,12 @@ function addTodo() {
         if (todos.indexOf(input.value) > -1) {
             alert('Ops, this todo already exist!')
         } else {
-            todos.push(input.value)
+            todo = {
+                id: todos.length,
+                todo: input.value,
+                done: false
+            }
+            todos.push(todo)
             saveLocal()
             listTodos()
             input.value = ''
@@ -43,11 +49,31 @@ function listTodos() {
         button.style.margin = '0 10px'
         button.setAttribute('onclick', 'delTodo(' + todos.indexOf(todo) + ')')
         li = document.createElement('li')
-        li.textContent = todo
+        checkbox = document.createElement('input')
+        checkbox.type = 'checkbox'
+        checkbox.setAttribute('onclick', 'checkTodo(' + todos.indexOf(todo) + ')')
+        checkbox.setAttribute('id', todos.indexOf(todo))
+        li.appendChild(checkbox)
+        li.appendChild(document.createTextNode(todo.todo))
         li.style.margin = '5px 0'
         li.appendChild(button)
         ul.appendChild(li)
+        if (todo.done === true) {
+            checkbox.checked = true
+            li.style.textDecoration = 'line-through'
+        }
     }
+
+}
+
+function checkTodo(checkTodo) {
+    checkBox = document.getElementById(checkTodo)
+    if (checkBox.checked == true)
+        todos[checkTodo].done = true
+    else
+        todos[checkTodo].done = false
+    saveLocal()
+    listTodos()
 }
 
 function delTodo(delTodo) {
@@ -64,7 +90,7 @@ function setFooter(user) {
     usern = document.createElement('h5')
     usern.innerHTML = 'Created by: ' + user.name
     div = document.createElement('div')
-    div.style.display = 'flex'
+    div.classList.add('footer')
     img = document.createElement('img')
     img.setAttribute('src', user.img)
     img.style.borderRadius = '50%'
