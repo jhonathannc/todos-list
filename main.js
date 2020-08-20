@@ -89,8 +89,17 @@ function saveLocal() {
 }
 
 function setFooter(user) {
-    usern = document.createElement('h5')
-    usern.innerHTML = 'Criado por: ' + user.name
+    usern = document.createElement('p')
+    aUser = document.createElement('a')
+    divUser = document.createElement('div')
+    aUser.href = user.url
+    aUser.innerHTML = user.name
+    aUser.style = 'margin: 0 .2rem'
+    usern.style = 'white-space: nowrap'
+    usern.innerHTML = 'Criado por: '
+    divUser.style = 'display: flex; align-items: center'
+    divUser.appendChild(usern)
+    divUser.appendChild(aUser)
     div = document.createElement('div')
     div.classList.add('footer')
     img = document.createElement('img')
@@ -100,11 +109,12 @@ function setFooter(user) {
     img.style.heigth = '50px'
     img.style.margin = '5px'
     div.appendChild(img)
-    div.appendChild(usern)
-    a = document.createElement('a')
-    a.href = user.url
-    a.innerHTML = 'Me veja no GitHub'
+    div.appendChild(divUser)
+    aProject = document.createElement('a')
+    aProject.style = 'font-weight: bold'
+    aProject.href = 'https://github.com/jhonathannc/todos-list/issues/1'
+    aProject.innerHTML = 'Confira andamento deste projeto'
     document.getElementById('app').appendChild(div)
-    document.getElementById('app').appendChild(a)
+    document.getElementById('app').appendChild(aProject)
 
 }
