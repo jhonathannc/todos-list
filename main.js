@@ -26,9 +26,8 @@ axios.get('https://api.github.com/users/jhonathannc')
 function addTodo() {
     if (input.value != '') {
         for (todo of todos) {
-            if (todo.todo.indexOf(input.value) > -1)
+            if (todo.todo === input.value)
                 return alert('Ops, esta tarefa ja existe!')
-
         }
         todo = {
             id: todos.length,
