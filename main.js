@@ -90,7 +90,7 @@ function saveLocal() {
 
 function setFooter(user) {
     usern = document.createElement('h5')
-    usern.innerHTML = 'Created by: ' + user.name
+    usern.innerHTML = 'Criado por: ' + user.name
     div = document.createElement('div')
     div.classList.add('footer')
     img = document.createElement('img')
