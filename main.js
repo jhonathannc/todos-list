@@ -27,7 +27,7 @@ function addTodo() {
     if (input.value != '') {
         for (todo of todos) {
             if (todo.todo.indexOf(input.value) > -1)
-                return alert('Ops, this todo already exist!')
+                return alert('Ops, esta tarefa ja existe!')
 
         }
         todo = {
@@ -47,7 +47,7 @@ function listTodos() {
     ul.innerHTML = ''
     for (todo of todos) {
         button = document.createElement('button')
-        button.textContent = 'Delete'
+        button.textContent = 'Deletar'
         button.style.margin = '0 10px'
         button.setAttribute('onclick', 'delTodo(' + todos.indexOf(todo) + ')')
         li = document.createElement('li')
@@ -103,7 +103,7 @@ function setFooter(user) {
     div.appendChild(usern)
     a = document.createElement('a')
     a.href = user.url
-    a.innerHTML = 'See me on GitHub'
+    a.innerHTML = 'Me veja no GitHub'
     document.getElementById('app').appendChild(div)
     document.getElementById('app').appendChild(a)
 
