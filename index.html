@@ -13,7 +13,13 @@
         <h1>Minhas Tarefas</h1>
         <div class="items">
             <div class="new-item">
-                <input type="text" placeholder="Escreva uma tarefa aqui">
+                <input type="text" placeholder="Escreva uma tarefa aqui" id="newTodoInput">
+                <select id="prioritySelect">
+                    <option value="Medium">Média</option>
+                    <option value="High">Alta</option>
+                    <option value="Low">Baixa</option>
+                </select>
+                <input type="date" id="dueDateInput">
                 <button onclick="addTodo()">Adicionar</button>
             </div>
             <ul></ul>

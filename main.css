@@ -49,3 +49,17 @@ a {
 a:hover {
     color: blue;
 }
+
+/* Priority Styles */
+.priority-high {
+    color: red;
+    font-weight: bold;
+}
+
+.priority-medium {
+    color: orange;
+}
+
+.priority-low {
+    color: green;
+}

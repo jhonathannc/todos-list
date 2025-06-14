@@ -1,5 +1,9 @@
 ul = document.getElementsByTagName('ul')[0]
-input = document.getElementsByTagName('input')[0]
+// Updated to use the new ID for the input field
+input = document.getElementById('newTodoInput')
+prioritySelect = document.getElementById('prioritySelect') // Get the priority select element
+dueDateInput = document.getElementById('dueDateInput') // Get the due date input element
+
 input.addEventListener('keyup', function(event) {
     if (event.keyCode === 13) {
         addTodo()
@@ -29,12 +33,18 @@ function addTodo() {
             if (todo.todo === input.value)
                 return alert('Ops, esta tarefa ja existe!')
         }
+        // Get priority from the select element
+        const priority = prioritySelect.value;
         todo = {
-            id: todos.length,
+            id: todos.length, // This id might cause issues if todos are deleted. A better ID would be a UUID or timestamp.
             todo: input.value,
-            done: false
+            done: false,
+            priority: priority, // Add priority to the todo object
+            dueDate: dueDateInput.value // Add due date to the todo object
         }
         todos.push(todo)
+        // Clear the due date input after adding
+        dueDateInput.value = '';
         saveLocal()
         listTodos()
         return input.value = ''
@@ -55,7 +65,27 @@ function listTodos() {
         checkbox.setAttribute('onclick', 'checkTodo(' + todos.indexOf(todo) + ')')
         checkbox.setAttribute('id', todos.indexOf(todo))
         li.appendChild(checkbox)
-        li.appendChild(document.createTextNode(todo.todo))
+
+
+
+        span = document.createElement('span') // Create a span for the todo text
+        const priority = todo.priority || 'Medium'; // Default to Medium if not set
+        let displayText = todo.todo;
+        displayText += ` (${priority})`;
+
+        // Add due date to display text if it exists
+        if (todo.dueDate) {
+            displayText += ` [Due: ${todo.dueDate}]`;
+        }
+
+        span.textContent = displayText;
+        span.setAttribute('onclick', 'editTodo(' + todos.indexOf(todo) + ')') // Add onclick to edit
+
+        // Add class for styling based on priority
+        span.classList.add('priority-' + priority.toLowerCase());
+        // Potentially add class for overdue/due soon styling later
+
+        li.appendChild(span)
         li.style.margin = '5px 0'
         li.appendChild(button)
         ul.appendChild(li)
@@ -81,6 +111,44 @@ function delTodo(delTodo) {
     todos.splice(delTodo, 1)
     listTodos()
     saveLocal()
+}
+
+function editTodo(index) {
+    const li = ul.children[index];
+    const span = li.querySelector('span'); // Find the span within the li
+    // When editing, we should only edit the core todo text, not the priority suffix.
+    // So, we retrieve the original todo text without the priority.
+    const currentText = todos[index].todo;
+
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.value = currentText;
+
+    // Function to save changes
+    const saveChanges = () => {
+        const newText = inputField.value.trim();
+        if (newText && newText !== currentText) {
+            todos[index].todo = newText; // Only update the text, priority remains unchanged during this edit
+            saveLocal();
+            listTodos(); // Re-render the list to show the updated static text
+        } else {
+            // If the text is empty or unchanged, revert to the original span
+            // We need to ensure the original span (with priority) is put back if no changes.
+            // listTodos() will handle recreating the correct span text, so just calling it is fine.
+            listTodos();
+        }
+    };
+
+    inputField.addEventListener('blur', saveChanges);
+    inputField.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            inputField.removeEventListener('blur', saveChanges); // Avoid double saving if Enter also causes blur
+            saveChanges();
+        }
+    });
+
+    li.replaceChild(inputField, span); // Replace span with input field
+    inputField.focus();
 }
 
 function saveLocal() {
